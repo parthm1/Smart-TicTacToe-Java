@@ -1,4 +1,3 @@
-
 package tictactoe;
 
 import javax.swing.*;
@@ -11,7 +10,6 @@ public class GameGUI extends JFrame {
 	private JComboBox<String> difficultyBox;
     private JButton[][] buttons;
     private GameBoard game;
-    private char currentPlayer;
     private boolean gameOver;
     private AIPlayer ai;
     
@@ -24,7 +22,6 @@ public class GameGUI extends JFrame {
     public GameGUI() {
     	
     	game = new GameBoard();
-    	currentPlayer = 'X';
     	gameOver = false;
     	ai = new AIPlayer();
     	
@@ -72,20 +69,6 @@ public class GameGUI extends JFrame {
 		topPanel.add(statusLabel);
 		
 		add(topPanel, BorderLayout.NORTH);
-		
-		difficultyBox.addActionListener(e -> {
-
-		    game = new GameBoard();
-		    gameOver = false;
-		    
-		    
-
-		    for (int i = 0; i < 3; i++) {
-		        for (int j = 0; j < 3; j++) {
-		            buttons[i][j].setText("");
-		        }
-		    }
-		});
 
         buttons = new JButton[3][3];
         
@@ -97,6 +80,7 @@ public class GameGUI extends JFrame {
             for (int j = 0; j < 3; j++) {
 
                 buttons[i][j] = new JButton("");
+                buttons[i][j].setFocusPainted(false);
 
                 buttons[i][j].setFont(
                     new Font("Arial", Font.BOLD, 60)
@@ -205,13 +189,26 @@ public class GameGUI extends JFrame {
         
         add(boardPanel, BorderLayout.CENTER);
         
+     // Reset the game when difficulty changes
+        difficultyBox.addActionListener(e -> {
+
+            statusLabel.setText("Your turn - X");
+
+            game = new GameBoard();
+            gameOver = false;
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    buttons[i][j].setText("");
+                }
+            }
+        });
+        
 		JButton restartButton = new JButton("Restart Game");
 		
 		restartButton.addActionListener(e -> {
 		
 		    game = new GameBoard();
-		
-		    currentPlayer = 'X';
 		
 		    gameOver = false;
 		    
